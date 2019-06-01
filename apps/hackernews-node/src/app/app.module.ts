@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { AuthorResolver } from './resolvers/link.resolver';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -9,6 +10,6 @@ import { AuthorResolver } from './resolvers/link.resolver';
       autoSchemaFile: 'schema.gql'
     })
   ],
-  providers: [AuthorResolver]
+  providers: [AuthorResolver, PrismaService]
 })
 export class AppModule {}
