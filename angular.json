@@ -2,7 +2,66 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "hackernews-node": {
+      "root": "apps/hackernews-node",
+      "sourceRoot": "apps/hackernews-node/src",
+      "projectType": "application",
+      "prefix": "hackernews-node",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/hackernews-node",
+            "main": "apps/hackernews-node/src/main.ts",
+            "tsConfig": "apps/hackernews-node/tsconfig.app.json",
+            "assets": [
+              "apps/hackernews-node/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/hackernews-node/src/environments/environment.ts",
+                  "with": "apps/hackernews-node/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "hackernews-node:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/hackernews-node/tsconfig.app.json",
+              "apps/hackernews-node/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/hackernews-node/jest.config.js",
+            "tsConfig": "apps/hackernews-node/tsconfig.spec.json"
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -15,6 +74,9 @@
       "unitTestRunner": "jest",
       "e2eTestRunner": "cypress"
     },
-    "@nrwl/angular:library": { "unitTestRunner": "jest" }
-  }
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "hackernews-node"
 }
