@@ -24,7 +24,9 @@
     "update:check": "ng update",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "prisma-deploy": "cd apps/hackernews-node/src && prisma deploy",
+    "prisma-generate": "cd apps/hackernews-node/src && prisma generate"
   },
   "private": true,
   "dependencies": {
@@ -72,6 +74,7 @@
     "jest": "24.1.0",
     "jest-preset-angular": "7.0.0",
     "prettier": "1.16.4",
+    "prisma": "^1.34.0",
     "ts-jest": "24.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",

@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
+import { User } from './user';
 
 @ObjectType()
 export class Link {
@@ -8,4 +9,6 @@ export class Link {
   description: string;
   @Field()
   url: string;
+  @Field(type => User, { nullable: true })
+  postedBy: User;
 }
