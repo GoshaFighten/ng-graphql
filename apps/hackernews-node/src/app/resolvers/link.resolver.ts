@@ -1,25 +1,56 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveProperty,
+  Parent,
+  Subscription
+} from '@nestjs/graphql';
 import { Link } from '../models/link';
 import { PrismaService } from '../prisma.service';
 import { Prisma } from '../generated/prisma-client';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../gql-auth.guard';
+import { User as CurrentUser } from '../user.decorator';
+import { User } from '../models/user';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubSub = new PubSub();
 
 @Resolver(of => Link)
-export class AuthorResolver {
+export class LinkResolver {
   prisma: Prisma;
   constructor(private readonly prismaService: PrismaService) {
     this.prisma = prismaService.prisma;
   }
 
   @Query(returns => [Link])
-  feed() {
-    return this.prisma.links();
+  async feed() {
+    return await this.prisma.links();
   }
 
+  @ResolveProperty()
+  async postedBy(@Parent() parent: Link) {
+    return await this.prisma.link({ id: parent.id }).postedBy();
+  }
+
+  @UseGuards(GqlAuthGuard)
   @Mutation(returns => Link)
-  post(@Args('url') url: string, @Args('description') description: string) {
-    return this.prisma.createLink({
-      url: url,
-      description: description
+  async post(
+    @Args('url') url: string,
+    @Args('description') description: string,
+    @CurrentUser() user: User
+  ) {
+    return await this.prisma.createLink({
+      url,
+      description,
+      postedBy: { connect: { id: user.id } }
     });
+  }
+
+  @Subscription(returns => Link)
+  newLink() {
+    return pubSub.asyncIterator('newLink');
   }
 }

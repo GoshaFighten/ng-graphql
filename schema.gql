@@ -3,16 +3,32 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 type Link {
   id: ID!
   description: String!
   url: String!
+  postedBy: User
 }
 
 type Mutation {
   post(description: String!, url: String!): Link!
+  signup(name: String!, password: String!, email: String!): AuthPayload!
+  login(password: String!, email: String!): AuthPayload!
 }
 
 type Query {
   feed: [Link!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  links: [Link!]!
 }

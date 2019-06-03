@@ -12,5 +12,5 @@ export class User {
   @Field()
   password: string;
   @Field(type => [Link])
-  links: Link[];
+  links?: Link[];
 }
