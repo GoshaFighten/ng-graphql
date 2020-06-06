@@ -46,7 +46,7 @@
     "@nestjs/platform-express": "^6.2.4",
     "@nrwl/angular": "^8.0.1",
     "@types/bcryptjs": "^2.4.2",
-    "apollo-server-express": "^2.6.1",
+    "apollo-server-express": "^2.14.2",
     "bcryptjs": "^2.4.3",
     "core-js": "^2.5.4",
     "graphql": "^14.3.1",
